@@ -216,10 +216,10 @@ while true do
 
     elseif typ == "body" then
         ngx.log(ngx.DEBUG , 'file size : ' , tonumber(res))
-        if type(tonumber(res)) == 'number' and tonumber(res) > conf.max_size then
-            ngx.say(dkjson.encode({code=10002, msg='文件超过规定大小', data=res}))
-            return
-        end
+--        if type(tonumber(res)) == 'number' and tonumber(res) > conf.max_size then
+--            ngx.say(dkjson.encode({code=10002, msg='文件超过规定大小', data=res}))
+--            return
+--        end
         if file then
             file:write(res)
         end
@@ -231,11 +231,11 @@ while true do
     elseif typ == "eof" then
         file_name = string.gsub(file_name, upload_path, '')
         local request_host =ngx.var.host
-        if conf.scope == 'private' then
-            url = private_host..file_name
-        else
+        if conf.scope == 'public' then
             file_name = string.gsub(file_name , '/public' , '')
             url =    public_host..file_name
+        else
+            url = private_host..file_name
         end
         ngx.say(dkjson.encode({code=10000, msg='上传成功！',url= url}))
         break
