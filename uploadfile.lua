@@ -234,8 +234,10 @@ while true do
         if conf.scope == 'public' then
             file_name = string.gsub(file_name , '/public' , '')
             url =    public_host..file_name
-        else
+        elseif conf.scope == 'private' then
             url = private_host..file_name
+        else
+            url = public_host..file_name
         end
         ngx.say(dkjson.encode({code=10000, msg='上传成功！',url= url}))
         break
